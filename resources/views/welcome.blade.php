@@ -6,7 +6,8 @@
 
         <title>Full stack blog</title>
 
-        <link rek="stylesheet" href="/css/all.css" >
+        <link rel="stylesheet" href="/css/all.css">
+
 
     </head>
     <body>
