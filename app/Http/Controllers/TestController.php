@@ -10,4 +10,8 @@ class TestController extends Controller
         return view('welcome');
 
     }
+
+    public function test(){
+        return 'its working ';
+    }
 }
