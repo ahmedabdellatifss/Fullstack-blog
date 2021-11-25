@@ -8,6 +8,15 @@
 
         <link rel="stylesheet" href="/css/all.css">
 
+        <script>
+            (function () {
+                window.laravel = {
+                    csrfToken: '{{ csrf_token()}}'
+                };
+            })();
+
+        </script>
+
 
     </head>
     <body>
