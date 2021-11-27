@@ -2029,11 +2029,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       data: {
-        tagName: ''
+        tagName: '',
+        iconImage: '',
+        categoryName: ''
       },
       addModal: false,
       editModal: false,
@@ -2197,6 +2208,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.deleteItem = tag;
       this.deletingIndex = i;
       this.showDeleteModal = true;
+    },
+    handleSuccess: function handleSuccess(res, file) {
+      this.data.iconImage = res;
+    },
+    handleError: function handleError(res, file) {
+      this.$Notice.warning({
+        title: 'The file format is incorrect',
+        desc: "".concat(file.erors.file.length ? file.errors.file[0] : 'Somthing went wrong!')
+      });
+    },
+    handleFormatError: function handleFormatError(file) {
+      this.$Notice.warning({
+        title: 'The file format is incorrect',
+        desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+      });
+    },
+    handleMaxSize: function handleMaxSize(file) {
+      this.$Notice.warning({
+        title: 'Exceeding file size limit',
+        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+      });
     }
   },
   created: function created() {
@@ -67880,7 +67912,7 @@ var render = function () {
                 "p",
                 { staticClass: "_title0" },
                 [
-                  _vm._v("Tags "),
+                  _vm._v("Category "),
                   _c(
                     "Button",
                     {
@@ -67892,7 +67924,7 @@ var render = function () {
                     },
                     [
                       _c("Icon", { attrs: { type: "md-add" } }),
-                      _vm._v("Add tag"),
+                      _vm._v("Add Category"),
                     ],
                     1
                   ),
@@ -67999,7 +68031,16 @@ var render = function () {
                   attrs: {
                     multiple: "",
                     type: "drag",
-                    headers: { "x-csrf-token": _vm.token },
+                    headers: {
+                      "x-csrf-token": _vm.token,
+                      "X-Requested-With": "XMLHttpRequest",
+                    },
+                    "on-success": _vm.handleSuccess,
+                    "on-error": _vm.handleError,
+                    format: ["jpg", "jpeg", "png"],
+                    "max-size": 2048,
+                    "on-format-error": _vm.handleFormatError,
+                    "on-exceeded-size": _vm.handleMaxSize,
                     action: "/app/upload",
                   },
                 },
@@ -68019,6 +68060,14 @@ var render = function () {
                   ),
                 ]
               ),
+              _vm._v(" "),
+              _c("div", { staticClass: "image_thumb" }, [
+                _vm.data.iconImage
+                  ? _c("img", {
+                      attrs: { src: "/uploads/" + _vm.data.iconImage },
+                    })
+                  : _vm._e(),
+              ]),
               _vm._v(" "),
               _c(
                 "div",
@@ -68047,7 +68096,7 @@ var render = function () {
                       },
                       on: { click: _vm.addTag },
                     },
-                    [_vm._v(_vm._s(_vm.isAdding ? "Adding.." : "Add tag"))]
+                    [_vm._v(_vm._s(_vm.isAdding ? "Adding.." : "Add Category"))]
                   ),
                 ],
                 1
