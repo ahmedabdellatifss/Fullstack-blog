@@ -49,6 +49,7 @@
                     <div class="space"></div>
                     <Upload
                         multiple
+                        ref="uploads"
                         type="drag"
 						:headers="{'x-csrf-token' : token , 'X-Requested-With' : 'XMLHttpRequest'}"
                         :on-success="handleSuccess"
@@ -63,8 +64,11 @@
                             <p>Click or drag files here to upload</p>
                         </div>
                     </Upload>
-                    <div class="image_thumb">
-                        <img :src="`/uploads/${data.iconImage}`" v-if="data.iconImage" />
+                    <div class="demo-upload-list" v-if="data.iconImage">
+                        <img :src="`/uploads/${data.iconImage}`" />
+                        <div class="demo-upload-list-cover">
+                            <Icon type="ios-trash-outline" @click="deleteImage"></Icon>
+                        </div>
                     </div>
 
 					<div slot="footer">
@@ -216,7 +220,7 @@ export default {
                 desc: `${file.erors.file.length ? file.errors.file[0] : 'Somthing went wrong!'}`
             });
         },
-        handleFormatError (file) {
+        handleFormatError(file) {
             this.$Notice.warning({
                 title: 'The file format is incorrect',
                 desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
@@ -228,6 +232,16 @@ export default {
                 desc: 'File  ' + file.name + ' is too large, no more than 2M.'
             });
         },
+        async deleteImage() {
+            let image = this.data.iconImage
+            this.data.iconImage = ''
+            this.$refs.uploads.clearFiles()
+            const res = await this.callApi("post", "app/delete_image", {imageName: image});
+            if (res.status != 200) {
+                this.data.iconImage = image;
+                this.swr();
+            }
+        }
     },
 
     async created(){
@@ -242,4 +256,3 @@ export default {
 
 }
 </script>
-

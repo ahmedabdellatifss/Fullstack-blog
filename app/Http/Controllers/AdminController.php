@@ -48,12 +48,29 @@ class AdminController extends Controller
 
     public function upload(Request $request){
         $this->validate($request , [
-            'file' => 'required|mimes:jpeg,bmp,png'
+            'file' => 'required|mimes:jpeg,jpg,png'
         ]);
         $picName = time().'.'.$request->file->extension();
         $request->file->move(public_path('uploads') , $picName);
         return $picName;
     }
+
+    public function deleteImage(Request $request) {
+        $fileNme = $request->imageName;
+        $this->deleteFileFromServer($fileNme);
+        return 'Done';
+    }
+
+
+    public function deleteFileFromServer($fileName) {
+        $iflePath = public_path().'/uploads/'.$fileName;
+        if(file_exists($iflePath)){
+            @unlink($iflePath);
+        }
+        return;
+
+    }
+
 
 
 }
