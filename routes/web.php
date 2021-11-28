@@ -22,6 +22,10 @@ Route::post('app/upload' , 'AdminController@upload');
 Route::post('app/delete_image' , 'AdminController@deleteImage');
 
 
+Route::post('app/create_category' , 'AdminController@addCategory');
+Route::get('app/get_cagegory' , 'AdminController@getCagegory');
+
+
 
 Route::get('/', function () {
     return view('welcome');
