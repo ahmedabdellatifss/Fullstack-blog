@@ -11,6 +11,7 @@ import methods from './components/pages/basic/methods.vue'
 import home from './components/pages/home.vue'
 import tag from './admin/pages/tags.vue'
 import category from './admin/pages/category.vue'
+import usecom from './vuex/usecom.vue'
 
 
 const routes = [
@@ -33,7 +34,11 @@ const routes = [
 
 
 
-
+    //   Test Route
+    {
+        path: '/testvuex',
+        component: usecom
+    },
     {
         path: '/my-new-vue-route',
         component: firstPage
