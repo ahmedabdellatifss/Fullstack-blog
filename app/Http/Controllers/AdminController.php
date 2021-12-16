@@ -64,8 +64,10 @@ class AdminController extends Controller
     }
 
 
-    public function deleteFileFromServer($fileName) {
-        $iflePath = public_path().'/uploads/'.$fileName;
+    public function deleteFileFromServer($fileName , $hasFullPath = false) {
+        if (!$hasFullPath) {
+            $iflePath = public_path().'/uploads/'.$fileName;
+        }
         if(file_exists($iflePath)){
             @unlink($iflePath);
         }

@@ -2,23 +2,21 @@
     <div>
         <!-- delete alert modal -->
         <Modal
-                :value="getDeleteModalObj.showDeleteModal"
-                :mask-closable="false"
-                :closable="false"
-                width="360">
-                <p slot="header" style="color:#f60;text-align:center">
-                    <Icon type="ios-information-circle"></Icon>
-                    <span>Delete confirmation</span>
-                </p>
-                <div style="text-align:center">
-                    <p>Are you sure you want to delete tag?.</p>
-                </div>
-                <div slot="footer">
-                    <Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag" >Delete</Button>
-                </div>
-                <div slot="footer">
-                    <Button type="default" @click="closeEditModal">Close</Button>
-                </div>
+            :value="getDeleteModalObj.showDeleteModal"
+            :mask-closable="false"
+            :closable="false"
+            width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="ios-information-circle"></Icon>
+                <span>Delete confirmation</span>
+            </p>
+            <div style="text-align:center">
+                <p>Are you sure you want to delete tag?.</p>
+            </div>
+            <div slot="footer">
+                <Button type="default"  @click="closeModal">Close</Button>
+                <Button type="error" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag" >Delete</Button>
+            </div>
 	    </Modal>
     </div>
 </template>

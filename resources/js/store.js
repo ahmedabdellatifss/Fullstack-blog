@@ -18,8 +18,7 @@ export default new Vuex.Store({
     },
     getters: {
         getCounter(state){
-
-           return state.conuter
+            return state.conuter
         },
         getDeleteModalObj(state){
             return state.deleteModalObj
@@ -50,12 +49,7 @@ export default new Vuex.Store({
         setDeletingModalObj(state, data){
             state.deleteModalObj = data
         },
-        setUpdateUser(state, data){
-            state.user = data
-        },
-        setUserPermission(state, data){
-            state.userPermission = data
-        },
+
 
     },
 
