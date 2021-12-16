@@ -32,6 +32,7 @@
 									<Button type="info" size="small" @click="showEditModal(category, i)" >Edit</Button>
 									<Button type="error" size="small" @click="showDeletingModal(category, i)"  :loading="category.isDeleting" >Delete</Button>
 
+
 								</td>
 							</tr>
 								<!-- ITEMS -->
@@ -81,67 +82,70 @@
 					</div>
 
 				</Modal>
-				<!-- tag Editing modal -->
-				<Modal
-					v-model="editModal"
-					title="Edit category"
-					:mask-closable="false"
-					:closable="false"
-
-					>
-					<Input v-model="editData.categoryName" placeholder="Edit Category name"  />
-                    <div class="space"></div>
-                    <Upload v-show ="isIconImageNew"
-                        multiple
-                        ref="editDataUploads"
-                        type="drag"
-						:headers="{'x-csrf-token' : token , 'X-Requested-With' : 'XMLHttpRequest'}"
-                        :on-success="handleSuccess"
-                        :on-error= "handleError"
-                        :format="['jpg','jpeg','png']"
-                        :max-size="2048"
-                        :on-format-error="handleFormatError"
-                        :on-exceeded-size="handleMaxSize"
-                        action="/app/upload">
-                        <div style="padding: 20px 0">
-                            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                            <p>Click or drag files here to upload</p>
-                        </div>
-                    </Upload>
-                    <div class="demo-upload-list" v-if="editData.iconImage">
-                        <img :src="`${editData.iconImage}`" />
-                        <div class="demo-upload-list-cover">
-                            <Icon type="ios-trash-outline" @click="deleteImage(false)"></Icon>
-                        </div>
+		    <!-- tag editing modal -->
+                <Modal v-model="editModal" title="Edit category" :mask-closable="false" :closable="false">
+                <Input v-model="editData.categoryName" placeholder="Add category name" />
+                <div class="space"></div>
+                <Upload
+                    v-show="isIconImageNew"
+                    ref="editDataUploads"
+                    type="drag"
+                    :headers="{'x-csrf-token' : token, 'X-Requested-With' : 'XMLHttpRequest'}"
+                    :on-success="handleSuccess"
+                    :on-error="handleError"
+                    :format="['jpg','jpeg','png']"
+                    :max-size="2048"
+                    :on-format-error="handleFormatError"
+                    :on-exceeded-size="handleMaxSize"
+                    action="/app/upload"
+                >
+                    <div style="padding: 20px 0">
+                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                    <p>Click or drag files here to upload</p>
                     </div>
+                </Upload>
+                <div class="demo-upload-list" v-if="editData.iconImage">
+                    <img :src="`${editData.iconImage}`" />
+                    <div class="demo-upload-list-cover">
+                    <Icon type="ios-trash-outline" @click="deleteImage(false)"></Icon>
+                    </div>
+                </div>
 
-					<div slot="footer">
-						<Button type="default" @click="closeEditModal">Close</Button>
-						<Button type="primary" @click="editCategory" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Editing..' : 'Edit category'}}</Button>
-					</div>
-
-				</Modal>
+                <div slot="footer">
+                    <Button type="default" @click="closeEditModal">Close</Button>
+                    <Button
+                    type="primary"
+                    @click="editCategory"
+                    :disabled="isAdding"
+                    :loading="isAdding"
+                    >{{isAdding ? 'Editing..' : 'Edit Category'}}</Button>
+                </div>
+                </Modal>
                 <!-- delete alert modal -->
-				<Modal v-model="showDeleteModal" width="360">
+				<!-- <Modal v-model="showDeleteModal" width="360">
 					<p slot="header" style="color:#f60;text-align:center">
 						<Icon type="ios-information-circle"></Icon>
 						<span>Delete confirmation</span>
 					</p>
 					<div style="text-align:center">
 						<p>Are you sure you want to delete tag?.</p>
-
 					</div>
 					<div slot="footer">
 						<Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag" >Delete</Button>
 					</div>
-				</Modal>
+					<div slot="footer">
+						<Button type="default" @click="closeEditModal">Close</Button>
+					</div>
+				</Modal> -->
+                <deleteModal></deleteModal>
 			</div>
 		</div>
     </div>
 </template>
 
 <script>
-
+import deleteModal from '../components/deleteModal.vue'
+import { mapGetters } from 'vuex'
 export default {
 	data(){
 		return {
@@ -159,7 +163,7 @@ export default {
             },
             index : -1,
             showDeleteModal: false,
-			isDeleting : false,
+			isDeleing : false,
 			deleteItem: {},
 			deletingIndex: -1,
 			token:'',
@@ -240,19 +244,19 @@ export default {
 			this.showDeleteModal = false
 
 		},
-		showDeletingModal(tag, i){
-			const deleteModalObj  =  {
-				showDeleteModal: true,
-				deleteUrl : 'app/delete_tag',
-				data : tag,
-				deletingIndex: i,
-				isDeleted : false,
-			}
-			this.deleteItem = tag
-			this.deletingIndex = i
-			this.showDeleteModal = true
-
-		},
+		showDeletingModal(category, i) {
+        const deleteModalObj = {
+            showDeleteModal: true,
+            deleteUrl: "app/delete_category",
+            data: category,
+            deletingIndex: i,
+            isDeleted: false
+        };
+            this.$store.commit("setDeletingModalObj", deleteModalObj);
+            this.deleteItem = tag
+            this.deletingIndex = i
+            this.showDeleteModal = true
+        },
 
         handleSuccess (res, file) {
             res = `/uploads/${res}`
@@ -314,6 +318,19 @@ export default {
 			this.swr()
 		}
 	},
+    components : {
+		deleteModal
+	},
+    computed: {
+        ...mapGetters(["getDeleteModalObj"])
+    },
+    watch: {
+        getDeleteModalObj(obj) {
+            if (obj.isDeleted) {
+                this.categoryLists.splice(obj.deletingIndex, 1);
+            }
+        }
+   }
 
 }
 </script>

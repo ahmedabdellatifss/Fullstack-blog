@@ -27,15 +27,17 @@
 import comA from './comA'
 import comB from './comB'
 import comC from './comC'
-import {mapGetters} from 'vuex'
+import {mapGetters , mapActions} from 'vuex'
 export default {
     data(){
         return {
-
+            localVar: 'some value'
         }
     },
     methods : {
-
+        ...mapActions([
+            'changeCounterAction'
+        ])
     },
     computed : {
         ...mapGetters({
@@ -47,6 +49,9 @@ export default {
             this.$store.dispatch('changeCounterAction', 1)
             //this.$store.commit('changeTheCounter', 1)
         },
+        runSomethingwhenCounterChange(){
+            console.log('Iam runing based on each change')
+        }
 
     },
     created(){
@@ -58,7 +63,11 @@ export default {
         comC
     },
     watch : {
-
+        counter(value){
+            console.log('counter is changing', value)
+            this.runSomethingwhenCounterChange()
+            console.log('this is local variable' , this.localVar)
+        }
     }
 }
 </script>

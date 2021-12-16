@@ -47,12 +47,13 @@ class AdminController extends Controller
     }
 
 
-    public function upload(Request $request){
-        $this->validate($request , [
-            'file' => 'required|mimes:jpeg,jpg,png'
+    public function upload(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:jpeg,jpg,png',
         ]);
-        $picName = time().'.'.$request->file->extension();
-        $request->file->move(public_path('uploads') , $picName);
+        $picName = time() . '.' . $request->file->extension();
+        $request->file->move(public_path('uploads'), $picName);
         return $picName;
     }
 
@@ -104,4 +105,14 @@ class AdminController extends Controller
         ]);
     }
 
+    public function deleteCategory(Request $request)
+    {
+        // first delete the original file from the server
+        $this->deleteFileFromServer($request->iconImage);
+        // validate request
+        $this->validate($request, [
+            'id' => 'required',
+        ]);
+        return Category::where('id', $request->id)->delete();
+    }
 }

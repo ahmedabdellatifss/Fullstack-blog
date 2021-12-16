@@ -1,28 +1,69 @@
-
 import Vue from 'vue'
-import vuex from 'vuex'
+import Vuex from 'vuex'
+Vue.use(Vuex)
 
-Vue.use(vuex)
+export default new Vuex.Store({
+    state : {
+        conuter : 1000,
+        deleteModalObj : {
+            showDeleteModal: false,
+            deleteUrl : '',
+            data : null,
+            deletingIndex: -1,
+            isDeleted : false,
 
-
-export default new vuex.Store({
-    state:{
-        counter : 1000
+        },
+        user: false,
+        userPermission: null
     },
-    getters:{
+    getters: {
         getCounter(state){
-            return state.counter
-        }
+
+           return state.conuter
+        },
+        getDeleteModalObj(state){
+            return state.deleteModalObj
+        },
+
+        getUserPermission(state){
+            return state.userPermission
+        },
+
+
+
     },
 
     mutations: {
-        changeTheCounter(state , data){
-            state.counter += data
-        }
+        changeTheCounter(state, data){
+            state.conuter += data
+        },
+        setDeleteModal(state, data){
+            const deleteModalObj = {
+                showDeleteModal: false,
+                deleteUrl : '',
+                data : null,
+                deletingIndex: -1,
+                isDeleted : data,
+            }
+            state.deleteModalObj = deleteModalObj
+        },
+        setDeletingModalObj(state, data){
+            state.deleteModalObj = data
+        },
+        setUpdateUser(state, data){
+            state.user = data
+        },
+        setUserPermission(state, data){
+            state.userPermission = data
+        },
+
     },
-    actions:{
-        changeCounterAction({commit} , data){
-            commit('changeTheCounter' , data)
+
+
+
+    actions :{
+        changeCounterAction({commit}, data){
+            commit('changeTheCounter', data)
         }
     }
 
