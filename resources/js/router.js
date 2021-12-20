@@ -6,12 +6,13 @@ import firstPage from './components/pages/myFirstVuePage.vue'
 import newRoutePage from './components/pages/newRoutePage.vue'
 import hooks from './components/pages/basic/hooks.vue'
 import methods from './components/pages/basic/methods.vue'
+import usecom from './vuex/usecom.vue'
 
 // project pages
 import home from './components/pages/home.vue'
 import tag from './admin/pages/tags.vue'
 import category from './admin/pages/category.vue'
-import usecom from './vuex/usecom.vue'
+import adminusers from './admin/pages/adminusers.vue'
 
 
 const routes = [
@@ -28,6 +29,10 @@ const routes = [
     {
         path: '/category',
         component: category
+    },
+    {
+        path: '/adminusers',
+        component: adminusers
     },
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Tag;
 use Illuminate\Http\Request;
 use App\Category;
+use App\User;
 
 class AdminController extends Controller
 {
@@ -117,4 +118,33 @@ class AdminController extends Controller
         ]);
         return Category::where('id', $request->id)->delete();
     }
+
+/// crate user
+
+    public function createUser (Request $request)
+    {
+        // validate request
+        $this->validate($request, [
+            'fullName' => 'required',
+            'email' => 'bail|required|email|unique:users',
+            // bail mean if record is failed it will not check for email
+            'password' => 'bail|required|min:6',
+            'userType' => 'required',
+        ]);
+        $password = bcrypt($request->password);
+        $user = User::create([
+            'fullName' => $request->fullName,
+            'email' => $request->email,
+            'password' => $password,
+            'userType' => $request->userType,
+        ]);
+        return $user;
+    }
+
+    // get users
+    public function getUsers()
+    {
+        return User::where('userType' , '!=' , 'User')->get();
+    }
+
 }
