@@ -141,6 +141,33 @@ class AdminController extends Controller
         return $user;
     }
 
+
+    // ######  Edit User  #########
+
+    public function editUser (Request $request)
+    {
+        // validate request
+        $this->validate($request, [
+            'fullName' => 'required',
+            'email' => "bail|required|email|unique:users,email,$request->id",
+            // (email,$request->id) will ignore the email for the user his id = $request->id if he didn't want to change it #20
+            //(email,$request->id) mean if user won't to change the email that won't do error validate
+            'password' => 'min:6',
+            'userType' => 'required',
+        ]);
+        $data = [
+            'fullName' => $request->fullName,
+            'email' => $request->email,
+            'userType' => $request->userType,
+        ];
+        if ($request->password) {
+            $password = bcrypt($request->password);
+            $data['password'] = $password;
+        }
+        $user = User::where('id', $request->id)->update($data);
+        return $user;
+    }
+
     // get users
     public function getUsers()
     {

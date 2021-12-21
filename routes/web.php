@@ -30,6 +30,7 @@ Route::post('app/delete_category', 'AdminController@deleteCategory');
 
 Route::post('app/create_user', 'AdminController@createUser');
 Route::get('app/get_users', 'AdminController@getUsers');
+Route::post('app/edit_user', 'AdminController@editUser');
 
 
 Route::get('/', function () {

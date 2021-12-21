@@ -68,19 +68,34 @@
 					</div>
 
 				</Modal>
+
+
 				<!-- tag Editing modal -->
 				<Modal
 					v-model="editModal"
-					title="Edit tag"
+					title="Edit Admin"
 					:mask-closable="false"
 					:closable="false"
-
 					>
-					<Input v-model="editData.tagName" placeholder="Edit tag name"  />
-
+                    <div class="space">
+                        <Input type="text" v-model="editData.fullName" placeholder="Full name"  />
+                    </div>
+                    <div class="space">
+                        <Input type="email" v-model="editData.email" placeholder="Email"  />
+                    </div>
+                    <div class="space">
+                        <Input type="password" v-model="editData.password" placeholder="Password"  />
+                    </div>
+                    <div class="space">
+                        <Select v-model="editData.userType"  placeholder="Select admin type">
+                            <Option value="admin" >Admin</Option>
+                            <Option value="Editor" >Editor</Option>
+                            <!-- <Option value="Editor" >Editor</Option> -->
+                        </Select>
+                    </div>
 					<div slot="footer">
 						<Button type="default" @click="editModal=false">Close</Button>
-						<Button type="primary" @click="editTag" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Editing..' : 'Edit tag'}}</Button>
+						<Button type="primary" @click="editAdmin" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Editing..' : 'Edit admin'}}</Button>
 					</div>
 
 				</Modal>
@@ -139,7 +154,7 @@ export default {
             if(this.data.userType.trim() == '') return this.e('User type is required')
             const res = await this.callApi('post' , 'app/create_user' , this.data);
             if(res.status == 201) {
-                this.tags.unshift(res.data)
+                this.users.unshift(res.data)
                 this.s('Admin user has been added successfuly!')
                 this.addModal = false
                 this.data.fullName = ''
@@ -153,17 +168,19 @@ export default {
 
             }
         },
-        async editTag(){
-            if(this.editData.tagName.trim() == '') return this.e('Tag name is required')
-            const res = await this.callApi('post' , 'app/edit_tag' , this.editData);
+        async editAdmin(){
+            if(this.editData.fullName.trim() == '') return this.e('Full name is required')
+            if(this.editData.email.trim() == '') return this.e('email  is required')
+            if(this.editData.userType.trim() == '') return this.e('User type is required')
+            const res = await this.callApi('post' , 'app/edit_user' , this.editData);
             if(res.status == 200) {
-                this.tags[this.index].tagName = this.editData.tagName
-                this.s('Tag has been edit successfuly!')
-                this.editModal = false
+                this.users[this.index] = this.editData
+				this.s('User has been edited successfully!')
+				this.editModal = false
             }else{
                 if(res.status == 422) {
-                    if (res.data.errors.tagName)
-                        this.e(res.data.errors.tagName[0])
+                    for ( let err in res.data.errors)
+                        this.e(res.data.errors[err][0])
 
                 }else{
                     this.swr()
@@ -171,16 +188,17 @@ export default {
 
             }
         },
-        showEditModal(tag , index){
-            let obj = {
-				id : tag.id,
-				tagName : tag.tagName
+        showEditModal(user, index){
+			let obj = {
+				id : user.id,
+				fullName : user.fullName,
+				email : user.email,
+				userType : user.userType,
 			}
 			this.editData = obj
 			this.editModal = true
-            this.index = index
-
-		},
+			this.index = index
+        },
         async deleteTag(){
 			this.isDeleting = true
 			const res = await this.callApi('post', 'app/delete_tag', this.deleteItem)
