@@ -13,6 +13,7 @@ import home from './components/pages/home.vue'
 import tag from './admin/pages/tags.vue'
 import category from './admin/pages/category.vue'
 import adminusers from './admin/pages/adminusers.vue'
+import login from './admin/pages/login.vue'
 
 
 const routes = [
@@ -21,6 +22,10 @@ const routes = [
     {
         path: '/',
         component: home
+    },
+    {
+        path: '/login',
+        component: login
     },
     {
         path: '/tags',
