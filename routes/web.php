@@ -34,12 +34,21 @@ Route::post('app/edit_user', 'AdminController@editUser');
 Route::post('app/admin_login', 'AdminController@adminLogin');
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('json' , 'TestController@testcontroller');
+Route::get('/' , 'AdminController@index');
+Route::get('/logout' , 'AdminController@logout');
+Route::any('{slug}' , 'AdminController@index');
 
-Route::any('{slug}', function() {
-    return view('welcome');
-});
+
+
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('json' , 'TestController@testcontroller');
+
+// Route::any('{slug}', function() {
+//     return view('welcome');
+// });
