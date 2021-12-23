@@ -49,6 +49,9 @@ export default new Vuex.Store({
         setDeletingModalObj(state, data){
             state.deleteModalObj = data
         },
+        updateUser(state, data){
+            state.user = data
+        }
 
 
     },
