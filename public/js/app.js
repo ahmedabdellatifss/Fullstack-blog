@@ -2031,13 +2031,24 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
 //
 //
 //
@@ -2167,7 +2178,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         fullName: '',
         email: '',
         password: '',
-        userType: 'admin'
+        role_id: null
       },
       addModal: false,
       editModal: false,
@@ -2181,7 +2192,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isDeleting: false,
       deleteItem: {},
       deletingIndex: -1,
-      websiteSettings: []
+      websiteSettings: [],
+      roles: []
     };
   },
   methods: {
@@ -2218,12 +2230,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.abrupt("return", _this.e('Password is required'));
 
               case 6:
-                if (!(_this.data.userType.trim() == '')) {
+                if (_this.data.role_id) {
                   _context.next = 8;
                   break;
                 }
 
-                return _context.abrupt("return", _this.e('User type is required'));
+                return _context.abrupt("return", _this.e('Role id is required'));
 
               case 8:
                 _context.next = 10;
@@ -2282,12 +2294,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", _this2.e('email  is required'));
 
               case 4:
-                if (!(_this2.editData.userType.trim() == '')) {
+                if (_this2.editData.role_id) {
                   _context2.next = 6;
                   break;
                 }
 
-                return _context2.abrupt("return", _this2.e('User type is required'));
+                return _context2.abrupt("return", _this2.e('Role id  is required'));
 
               case 6:
                 _context2.next = 8;
@@ -2383,16 +2395,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _this4 = this;
 
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-      var res;
+      var _yield$Promise$all, _yield$Promise$all2, res, resRole;
+
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               _context4.next = 2;
-              return _this4.callApi('get', 'app/get_users');
+              return Promise.all([_this4.callApi('get', 'app/get_users'), _this4.callApi('get', 'app/get_roles')]);
 
             case 2:
-              res = _context4.sent;
+              _yield$Promise$all = _context4.sent;
+              _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
+              res = _yield$Promise$all2[0];
+              resRole = _yield$Promise$all2[1];
 
               if (res.status == 200) {
                 _this4.users = res.data;
@@ -2400,7 +2416,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this4.swr();
               }
 
-            case 4:
+              if (resRole.status == 200) {
+                _this4.roles = resRole.data;
+              } else {
+                _this4.swr();
+              }
+
+            case 8:
             case "end":
               return _context4.stop();
           }
@@ -69399,22 +69421,20 @@ var render = function () {
                     {
                       attrs: { placeholder: "Select admin type" },
                       model: {
-                        value: _vm.data.userType,
+                        value: _vm.data.role_id,
                         callback: function ($$v) {
-                          _vm.$set(_vm.data, "userType", $$v)
+                          _vm.$set(_vm.data, "role_id", $$v)
                         },
-                        expression: "data.userType",
+                        expression: "data.role_id",
                       },
                     },
-                    [
-                      _c("Option", { attrs: { value: "admin" } }, [
-                        _vm._v("Admin"),
-                      ]),
-                      _vm._v(" "),
-                      _c("Option", { attrs: { value: "Editor" } }, [
-                        _vm._v("Editor"),
-                      ]),
-                    ],
+                    _vm._l(_vm.roles, function (r, i) {
+                      return _vm.roles.length
+                        ? _c("Option", { key: i, attrs: { value: r.id } }, [
+                            _vm._v(_vm._s(r.roleName)),
+                          ])
+                        : _vm._e()
+                    }),
                     1
                   ),
                 ],
@@ -69536,15 +69556,15 @@ var render = function () {
                     {
                       attrs: { placeholder: "Select admin type" },
                       model: {
-                        value: _vm.editData.userType,
+                        value: _vm.data.role_id,
                         callback: function ($$v) {
-                          _vm.$set(_vm.editData, "userType", $$v)
+                          _vm.$set(_vm.data, "role_id", $$v)
                         },
-                        expression: "editData.userType",
+                        expression: "data.role_id",
                       },
                     },
                     [
-                      _c("Option", { attrs: { value: "admin" } }, [
+                      _c("Option", { attrs: { value: "Admin" } }, [
                         _vm._v("Admin"),
                       ]),
                       _vm._v(" "),

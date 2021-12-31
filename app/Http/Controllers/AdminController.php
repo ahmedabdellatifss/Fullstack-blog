@@ -165,14 +165,14 @@ class AdminController extends Controller
             'email' => 'bail|required|email|unique:users',
             // bail mean if record is failed it will not check for email
             'password' => 'bail|required|min:6',
-            'userType' => 'required',
+            'role_id' => 'required',
         ]);
         $password = bcrypt($request->password);
         $user = User::create([
             'fullName' => $request->fullName,
             'email' => $request->email,
             'password' => $password,
-            'userType' => $request->userType,
+            'role_id' => $request->role_id,
         ]);
         return $user;
     }
@@ -189,12 +189,12 @@ class AdminController extends Controller
             // (email,$request->id) will ignore the email for the user his id = $request->id if he didn't want to change it #20
             //(email,$request->id) mean if user won't to change the email that won't do error validate
             'password' => 'min:6',
-            'userType' => 'required',
+            'role_id' => 'required',
         ]);
         $data = [
             'fullName' => $request->fullName,
             'email' => $request->email,
-            'userType' => $request->userType,
+            'role_id' => $request->roel_id,
         ];
         if ($request->password) {
             $password = bcrypt($request->password);
@@ -222,7 +222,8 @@ class AdminController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            if ($user->userType  == 'User') {
+
+            if ($user->role->isAdmin  == 0) {
                 Auth::logout();
                 return response()->json([
                     'msg' => 'Incorrect login details',
