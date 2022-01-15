@@ -76,7 +76,6 @@
 					</p>
 					<div style="text-align:center">
 						<p>Are you sure you want to delete tag?.</p>
-
 					</div>
 					<div slot="footer">
 						<Button type="error" size="large" long :loading="isDeleting" :disabled="isDeleting" @click="deleteTag" >Delete</Button>
@@ -125,11 +124,9 @@ export default {
                 if(res.status == 422) {
                     if (res.data.errors.roleName)
                         this.e(res.data.errors.roleName[0])
-
                 }else{
                     this.swr()
                 }
-
             }
         },
         async edit(){
@@ -143,11 +140,9 @@ export default {
                 if(res.status == 422) {
                     if (res.data.errors.roleName)
                         this.e(res.data.errors.roleName[0])
-
                 }else{
                     this.swr()
                 }
-
             }
         },
         showEditModal(role , index){
@@ -158,7 +153,6 @@ export default {
 			this.editData = obj
 			this.editModal = true
             this.index = index
-
 		},
         async deleteTag(){
 			this.isDeleting = true
@@ -171,7 +165,6 @@ export default {
 			}
 			this.isDeleting = false
 			this.showDeleteModal = false
-
 		},
 		showDeletingModal(category, i) {
             const deleteModalObj = {
@@ -208,7 +201,5 @@ export default {
 			}
 		}
 	}
-
 }
 </script>
-

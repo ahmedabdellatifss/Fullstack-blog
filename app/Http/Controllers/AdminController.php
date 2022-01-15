@@ -34,7 +34,31 @@ class AdminController extends Controller
             {
                 return redirect('/');
             }
+            return $this->checkForPermission($user , $request);
+
+    }
+
+    public function checkForPermission($user , $request)
+    {
+        $permission = json_decode($user->role->permission);
+        $hasPermission = false;
+        if (!$permission) {
             return view('welcome');
+        }
+
+        foreach ($permission as $p) {
+            if ($p->name == $request->path()) {
+                if ($p->read) {
+                    $hasPermission = true;
+                }
+            }
+        }
+        if ($hasPermission) {
+            return view('welcome');
+        }
+
+        return view('welcome');
+        return view('notfound');
     }
 
     public function logout()
@@ -207,7 +231,7 @@ class AdminController extends Controller
     // get users
     public function getUsers()
     {
-        return User::where('userType' , '!=' , 'User')->get();
+        return User::get();
     }
 
     ///  Login for Admin
@@ -269,6 +293,19 @@ class AdminController extends Controller
 
         return Role::where('id', $request->id)->update([
             'roleName' => $request->roleName
+        ]);
+    }
+
+
+    public function assignRoles (Request $request)
+    {
+        // validate request
+        $this->validate($request, [
+            'permission' => 'required',
+            'id' => 'required',
+        ]);
+        return Role::where('id' , $request->id)->update([
+            'permission' => $request->permission,
         ]);
     }
 
