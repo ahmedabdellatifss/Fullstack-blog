@@ -39,6 +39,9 @@ Route::prefix('app/')->middleware([AdminCheck::class])->group(function(){
 });
 
 
+Route::post('createBlog' ,'AdminController@uploadEditorImage');
+
+
 
 
 Route::get('/' , 'AdminController@index');

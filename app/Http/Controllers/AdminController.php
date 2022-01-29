@@ -118,6 +118,23 @@ class AdminController extends Controller
         return $picName;
     }
 
+    // Upload Image from editor.js
+    public function uploadEditorImage(Request $request)
+    {
+        $this->validate($request, [
+            'image' => 'required|mimes:jpeg,jpg,png',
+        ]);
+        $picName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads'), $picName);
+        return response()->json([
+            'success' => 1,
+            'file' =>[
+                'url' => "http://localhost/fullstack/public/uploads/$picName"
+            ],
+        ]);
+        return $picName;
+    }
+
     public function deleteImage(Request $request) {
         $fileNme = $request->imageName;
         $this->deleteFileFromServer($fileNme);

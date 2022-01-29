@@ -110,14 +110,14 @@ methods: {
     console.log(this.$route)
     const res = await this.callApi('get', 'app/get_roles')
     if (res.status == 200) {
-      this.roles = res.data;
-      if(res.data.length){
-         this.data.id = res.data[0].id
-         if(res.data[0].permission){
+        this.roles = res.data;
+        if(res.data.length){
+            this.data.id = res.data[0].id
+            if(res.data[0].permission){
             this.resources = JSON.parse(res.data[0].permission)
             //this.resources = this.defaultResourcesPermission
-         }
-      }
+            }
+        }
     } else {
       this.swr();
     }
