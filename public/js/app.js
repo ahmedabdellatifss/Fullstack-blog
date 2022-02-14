@@ -3396,7 +3396,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               _this4.token = window.laravel.csrfToken;
               _context4.next = 3;
-              return _this4.callApi('get', 'app/get_cagegory');
+              return _this4.callApi('get', 'app/get_category');
 
             case 3:
               res = _context4.sent;
@@ -3441,6 +3441,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -3524,7 +3536,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var data;
+        var data, res, i;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -3534,32 +3546,83 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.outputHtml(data.blocks);
 
               case 3:
-                console.log(_this.articleHTML); // this.data.post = this.articleHTML
-                // this.data.jsonData = JSON.stringify(data)
-                // if(this.data.post.trim()=='') return this.e('Post is required')
-                // if(this.data.title.trim()=='') return this.e('Title is required')
-                // if(this.data.post_excerpt.trim()=='') return this.e('Post exerpt is required')
-                // if(this.data.metaDescription.trim()=='') return this.e('Meta description is required')
-                // if(!this.data.tag_id.length) return this.e('Tag is required')
-                // if(!this.data.category_id.length) return this.e('Category is required')
-                // this.isCreating = true
-                // const res = await this.callApi('post', 'app/create-blog', this.data)
-                // if(res.status===200){
-                // 	this.s('Blog has been created successfully!')
-                //     // redirect...
-                //     this.$router.push('/blogs')
-                // }else{
-                //     if(res.status==422){
-                //         for(let i in res.data.errors){
-                //             this.e(res.data.errors[i][0])
-                //         }
-                //     }else{
-                //         this.swr()
-                //     }
-                // }
-                // this.isCreating = false
+                console.log(_this.articleHTML);
+                _this.data.post = _this.articleHTML;
+                _this.data.jsonData = JSON.stringify(data);
 
-              case 4:
+                if (!(_this.data.post.trim() == '')) {
+                  _context.next = 8;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Post is required'));
+
+              case 8:
+                if (!(_this.data.title.trim() == '')) {
+                  _context.next = 10;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Title is required'));
+
+              case 10:
+                if (!(_this.data.post_excerpt.trim() == '')) {
+                  _context.next = 12;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Post exerpt is required'));
+
+              case 12:
+                if (!(_this.data.metaDescription.trim() == '')) {
+                  _context.next = 14;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Meta description is required'));
+
+              case 14:
+                if (_this.data.tag_id.length) {
+                  _context.next = 16;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Tag is required'));
+
+              case 16:
+                if (_this.data.category_id.length) {
+                  _context.next = 18;
+                  break;
+                }
+
+                return _context.abrupt("return", _this.e('Category is required'));
+
+              case 18:
+                _this.isCreating = true;
+                _context.next = 21;
+                return _this.callApi('post', 'app/create-blog', _this.data);
+
+              case 21:
+                res = _context.sent;
+
+                if (res.status === 200) {
+                  _this.s('Blog has been created successfully!'); // redirect...
+
+
+                  _this.$router.push('/blogs');
+                } else {
+                  if (res.status == 422) {
+                    for (i in res.data.errors) {
+                      _this.e(res.data.errors[i][0]);
+                    }
+                  } else {
+                    _this.swr();
+                  }
+                }
+
+                _this.isCreating = false;
+
+              case 24:
               case "end":
                 return _context.stop();
             }
@@ -3639,19 +3702,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     }
-  } // async created(){
-  // 	const [cat, tag] = await Promise.all([
-  // 		this.callApi('get', 'app/get_category'),
-  // 		this.callApi('get', 'app/get_tags'),
-  // 	])
-  // 	if(cat.status==200){
-  // 		this.category = cat.data
-  // 		this.tag = tag.data
-  // 	}else{
-  // 		this.swr()
-  // 	}
-  // }
+  },
+  created: function created() {
+    var _this4 = this;
 
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var _yield$Promise$all, _yield$Promise$all2, cat, tag;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return Promise.all([_this4.callApi('get', 'app/get_category'), _this4.callApi('get', 'app/get_tags')]);
+
+            case 2:
+              _yield$Promise$all = _context3.sent;
+              _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
+              cat = _yield$Promise$all2[0];
+              tag = _yield$Promise$all2[1];
+
+              if (cat.status == 200) {
+                _this4.category = cat.data;
+                _this4.tag = tag.data;
+              } else {
+                _this4.swr();
+              }
+
+            case 7:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  }
 });
 
 /***/ }),
@@ -72242,6 +72327,112 @@ var render = function () {
               "div",
               { staticClass: "_input_field" },
               [
+                _c("Input", {
+                  attrs: {
+                    type: "textarea",
+                    rows: 4,
+                    placeholder: "Post excerpt ",
+                  },
+                  model: {
+                    value: _vm.data.post_excerpt,
+                    callback: function ($$v) {
+                      _vm.$set(_vm.data, "post_excerpt", $$v)
+                    },
+                    expression: "data.post_excerpt",
+                  },
+                }),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "_input_field" },
+              [
+                _c(
+                  "Select",
+                  {
+                    attrs: {
+                      filterable: "",
+                      multiple: "",
+                      placeholder: "Select category",
+                    },
+                    model: {
+                      value: _vm.data.category_id,
+                      callback: function ($$v) {
+                        _vm.$set(_vm.data, "category_id", $$v)
+                      },
+                      expression: "data.category_id",
+                    },
+                  },
+                  _vm._l(_vm.category, function (c, i) {
+                    return _c("Option", { key: i, attrs: { value: c.id } }, [
+                      _vm._v(_vm._s(c.categoryName)),
+                    ])
+                  }),
+                  1
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "_input_field" },
+              [
+                _c(
+                  "Select",
+                  {
+                    attrs: {
+                      filterable: "",
+                      multiple: "",
+                      placeholder: "Select tag",
+                    },
+                    model: {
+                      value: _vm.data.tag_id,
+                      callback: function ($$v) {
+                        _vm.$set(_vm.data, "tag_id", $$v)
+                      },
+                      expression: "data.tag_id",
+                    },
+                  },
+                  _vm._l(_vm.tag, function (t, i) {
+                    return _c("Option", { key: i, attrs: { value: t.id } }, [
+                      _vm._v(_vm._s(t.tagName)),
+                    ])
+                  }),
+                  1
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "_input_field" },
+              [
+                _c("Input", {
+                  attrs: {
+                    type: "textarea",
+                    rows: 4,
+                    placeholder: "Meta description",
+                  },
+                  model: {
+                    value: _vm.data.metaDescription,
+                    callback: function ($$v) {
+                      _vm.$set(_vm.data, "metaDescription", $$v)
+                    },
+                    expression: "data.metaDescription",
+                  },
+                }),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "_input_field" },
+              [
                 _c(
                   "Button",
                   {
@@ -72304,7 +72495,7 @@ var render = function () {
             { staticClass: "space" },
             [
               _c("Input", {
-                attrs: { type: "email", placeholder: "Email" },
+                attrs: { type: "email", placeholder: "Email " },
                 model: {
                   value: _vm.data.email,
                   callback: function ($$v) {

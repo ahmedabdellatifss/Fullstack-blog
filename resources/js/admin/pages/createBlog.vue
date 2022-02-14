@@ -20,7 +20,7 @@
                             :config="config"
                         />
 					</div>
-					<!-- <div class="_input_field">
+					<div class="_input_field">
 						<Input  type="textarea" v-model="data.post_excerpt" :rows="4" placeholder="Post excerpt " />
 					</div>
 					<div class="_input_field">
@@ -35,7 +35,7 @@
 					</div>
 					<div class="_input_field">
                         <Input  type="textarea" v-model="data.metaDescription" :rows="4" placeholder="Meta description" />
-                    </div> -->
+                    </div>
 
                     <div class="_input_field">
                         <Button @click="save" :loading="isCreating" :disabled="isCreating">{{isCreating ? 'Please wait...' : 'Create blog'}}</Button>
@@ -85,38 +85,38 @@ export default {
             var data = response
 			await this.outputHtml(data.blocks)
             console.log(this.articleHTML)
-			// this.data.post = this.articleHTML
-            // this.data.jsonData = JSON.stringify(data)
-            // if(this.data.post.trim()=='') return this.e('Post is required')
-            // if(this.data.title.trim()=='') return this.e('Title is required')
-            // if(this.data.post_excerpt.trim()=='') return this.e('Post exerpt is required')
-            // if(this.data.metaDescription.trim()=='') return this.e('Meta description is required')
-            // if(!this.data.tag_id.length) return this.e('Tag is required')
-            // if(!this.data.category_id.length) return this.e('Category is required')
+			this.data.post = this.articleHTML
+            this.data.jsonData = JSON.stringify(data)
+            if(this.data.post.trim()=='') return this.e('Post is required')
+            if(this.data.title.trim()=='') return this.e('Title is required')
+            if(this.data.post_excerpt.trim()=='') return this.e('Post exerpt is required')
+            if(this.data.metaDescription.trim()=='') return this.e('Meta description is required')
+            if(!this.data.tag_id.length) return this.e('Tag is required')
+            if(!this.data.category_id.length) return this.e('Category is required')
 
-			// this.isCreating = true
-			// const res = await this.callApi('post', 'app/create-blog', this.data)
-			// if(res.status===200){
-			// 	this.s('Blog has been created successfully!')
-            //     // redirect...
-            //     this.$router.push('/blogs')
-			// }else{
-            //     if(res.status==422){
-            //         for(let i in res.data.errors){
-            //             this.e(res.data.errors[i][0])
-            //         }
-            //     }else{
-            //         this.swr()
-            //     }
+			this.isCreating = true
+			const res = await this.callApi('post', 'app/create-blog', this.data)
+			if(res.status===200){
+				this.s('Blog has been created successfully!')
+                // redirect...
+                this.$router.push('/blogs')
+			}else{
+                if(res.status==422){
+                    for(let i in res.data.errors){
+                        this.e(res.data.errors[i][0])
+                    }
+                }else{
+                    this.swr()
+                }
 
-			// }
-			// this.isCreating = false
+			}
+			this.isCreating = false
         },
         async save(){
             this.$refs.editor.save()
         },
-		 outputHtml(articleObj){
-		   articleObj.map(obj => {
+        outputHtml(articleObj){
+        articleObj.map(obj => {
 				switch (obj.type) {
 				case 'paragraph':
 					this.articleHTML += this.makeParagraph(obj);
@@ -165,19 +165,19 @@ export default {
 			});
 		},
 	},
-	// async created(){
-	// 	const [cat, tag] = await Promise.all([
-	// 		this.callApi('get', 'app/get_category'),
-	// 		this.callApi('get', 'app/get_tags'),
-	// 	])
-	// 	if(cat.status==200){
-	// 		this.category = cat.data
-	// 		this.tag = tag.data
-	// 	}else{
-	// 		this.swr()
-	// 	}
+	async created(){
+		const [cat, tag] = await Promise.all([
+			this.callApi('get', 'app/get_category'),
+			this.callApi('get', 'app/get_tags'),
+		])
+		if(cat.status==200){
+			this.category = cat.data
+			this.tag = tag.data
+		}else{
+			this.swr()
+		}
 
-	// }
+	}
 
 
 }

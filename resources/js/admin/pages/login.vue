@@ -6,7 +6,7 @@
                     <h1>Login to the dashboard</h1>
                 </div>
                 <div class="space">
-                    <Input type="email" v-model="data.email"  placeholder="Email"  />
+                    <Input type="email" v-model="data.email"  placeholder="Email "  />
                 </div>
                 <div class="space">
                     <Input type="password" v-model="data.password"  placeholder="******"  />

@@ -21,7 +21,7 @@ Route::prefix('app/')->middleware([AdminCheck::class])->group(function(){
     Route::post('delete_image' , 'AdminController@deleteImage');
 
     Route::post('create_category' , 'AdminController@addCategory');
-    Route::get('get_cagegory' , 'AdminController@getCategory');
+    Route::get('get_category' , 'AdminController@getCategory');
     Route::post('edit_category' , 'AdminController@editCategory');
     Route::post('delete_category', 'AdminController@deleteCategory');
 
@@ -36,10 +36,16 @@ Route::prefix('app/')->middleware([AdminCheck::class])->group(function(){
     Route::post('edit_role', 'AdminController@editRole');
     Route::post('assign_roles', 'AdminController@assignRoles');
 
+    // blogs
+
+    Route::post('create-blog' , 'AdminController@createBlog');
+
 });
 
 
 Route::post('createBlog' ,'AdminController@uploadEditorImage');
+
+Route::get('slug' , 'AdminController@slug');
 
 
 

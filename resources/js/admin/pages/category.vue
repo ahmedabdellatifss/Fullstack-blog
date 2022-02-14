@@ -286,7 +286,7 @@ export default {
 
     async created(){
 		this.token = window.laravel.csrfToken
-		const res = await this.callApi('get', 'app/get_cagegory')
+		const res = await this.callApi('get', 'app/get_category')
 		if(res.status==200){
 			this.categoryLists = res.data
 		}else{

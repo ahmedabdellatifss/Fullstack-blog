@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tag;
+use App\Blog;
 use App\Category;
 use App\User;
 use App\Role;
@@ -17,20 +18,22 @@ class AdminController extends Controller
     //return Auth::check();
     public function index(Request $request)
     {
+        // you are not logged in and you'r not in login page you will redirect to login page so if you in login page you will not redirct to login page
         if(!Auth::check() && $request->path() != 'login')
         {
             return redirect('/login');
         }
         if(!Auth::check() && $request->path() == 'login')
         {
-            return view('welcome');
+            return view('welcome'); // and the view welcome will be denied you to access it
         }
             // you are already logged in... so check for if you are an admin user..
             $user = Auth::user();
+
             if ($user->userType == 'User'){
                 return redirect('/login');
             }
-            if($request->path() == 'login')
+            if($request->path() == 'login') // if you userType not user so you admin you will redirct to normal page
             {
                 return redirect('/');
             }
@@ -167,7 +170,8 @@ class AdminController extends Controller
     }
 
 
-    public function getCategory() {
+    public function getCategory()
+    {
         return Category::orderBy('id', 'desc')->get();
     }
 
@@ -324,6 +328,37 @@ class AdminController extends Controller
         return Role::where('id' , $request->id)->update([
             'permission' => $request->permission,
         ]);
+    }
+
+
+    public function slug()
+    {
+        $title = 'This is a nice  title';
+        return Blog::create([
+            'title'=> $title,
+            'post' => 'some post',
+            'post_excerpt' => ' excerpt',
+            'user_id' => 20,
+            'metaDescription' => 'a excerpt',
+            'featuredImage' => 'fcexcerpt',
+
+        ]);
+        return $title;
+    }
+
+    public function createBlog(Request $request)
+    {
+
+        return Blog::create([
+            'title'=> $request->title,
+            'post' => $request->post,
+            'post_excerpt' => $request->post_excerpt,
+            'user_id' => Auth::user()->id,
+            'metaDescription' => $request->metaDescription,
+            'jsonData' => $request->jsonData,
+
+        ]);
+
     }
 
 }
