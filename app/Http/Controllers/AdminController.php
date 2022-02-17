@@ -7,6 +7,8 @@ use App\Blog;
 use App\Category;
 use App\User;
 use App\Role;
+use App\Blogcategory;
+use App\Blogtag;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -348,16 +350,40 @@ class AdminController extends Controller
 
     public function createBlog(Request $request)
     {
+        $categories = $request->category_id;
+        $tags = $request->tag_id;
 
-        return Blog::create([
-            'title'=> $request->title,
-            'post' => $request->post,
-            'post_excerpt' => $request->post_excerpt,
-            'user_id' => Auth::user()->id,
-            'metaDescription' => $request->metaDescription,
-            'jsonData' => $request->jsonData,
+        $blogCategories = [];
+        $blogTags = [];
 
-        ]);
+        DB::beginTransaction();
+            try{
+                $blog = Blog::create([
+                    'title'=> $request->title,
+                    'post' => $request->post,
+                    'post_excerpt' => $request->post_excerpt,
+                    'user_id' => Auth::user()->id,
+                    'metaDescription' => $request->metaDescription,
+                    'jsonData' => $request->jsonData,
+                ]);
+                // Insert Blog categories
+                                    //#39
+                foreach($categories as $c){
+                    array_push($blogCategories , ['category_id'=>$c , 'blog_id'=>$blog->id]);
+                }
+                Blogcategory::insert($blogCategories);
+
+                // Insert blog tags
+                foreach($tags as $tag){
+                    array_push($blogTags , ['tag_id'=>$tag , 'blog_idsss'=>$blog->id]);
+                }
+                Blogtag::insert($blogTags);
+                DB::commit();
+                return 'done';
+            } catch (\Throwable $th) {
+        DB::rollback();
+            return 'Not done';
+        }
 
     }
 
