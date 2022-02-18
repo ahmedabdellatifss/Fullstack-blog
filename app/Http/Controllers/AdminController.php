@@ -387,4 +387,9 @@ class AdminController extends Controller
 
     }
 
+    public function blogdata()
+    {
+        return Blog::with(['tag' , 'cat'])->get();
+    }
+
 }
