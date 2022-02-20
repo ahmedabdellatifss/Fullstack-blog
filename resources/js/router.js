@@ -17,6 +17,7 @@ import login from './admin/pages/login.vue'
 import role from './admin/pages/role.vue'
 import assignRole from './admin/pages/assignRole.vue'
 import createBlog from './admin/pages/createBlog.vue'
+import blogs from './admin/pages/blogs.vue'
 
 
 const routes = [
@@ -61,6 +62,11 @@ const routes = [
         path: '/createBlog',
         component: createBlog,
         name: 'createBlog'
+    },
+    {
+        path: '/blogs',
+        component: blogs,
+        name: 'blogs'
     },
 
 

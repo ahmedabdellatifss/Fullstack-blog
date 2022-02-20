@@ -84,7 +84,7 @@ export default {
         async onSave(response){
             var data = response
 			await this.outputHtml(data.blocks)
-            console.log(this.articleHTML)
+            //console.log(this.articleHTML)
 			this.data.post = this.articleHTML
             this.data.jsonData = JSON.stringify(data)
             if(this.data.post.trim()=='') return this.e('Post is required')

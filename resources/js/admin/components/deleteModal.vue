@@ -11,7 +11,7 @@
                 <span>Delete confirmation</span>
             </p>
             <div style="text-align:center">
-                <p>Are you sure you want to delete tag?.</p>
+                <p>{{getDeleteModalObj.msg}}</p>
             </div>
             <div slot="footer">
                 <Button type="default"  @click="closeModal">Close</Button>

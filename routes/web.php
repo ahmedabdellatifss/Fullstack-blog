@@ -40,14 +40,15 @@ Route::prefix('app/')->middleware([AdminCheck::class])->group(function(){
 
     Route::post('create-blog' , 'AdminController@createBlog');
 
+    Route::get('blogsdata' , 'AdminController@blogdata'); // Get the Blogs Items
+    Route::post('delete_blog' , 'AdminController@deleteBlog');
+
 });
 
 
 Route::post('createBlog' ,'AdminController@uploadEditorImage');
 
 Route::get('slug' , 'AdminController@slug');
-
-Route::get('blogdata' , 'AdminController@blogdata');
 
 
 
