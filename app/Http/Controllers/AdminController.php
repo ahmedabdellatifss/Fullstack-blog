@@ -403,4 +403,9 @@ class AdminController extends Controller
         return Blog::where('id' , $request->id)->delete();
     }
 
+    public function singleBlogItem(Request $request)
+    {
+        return Blog::with(['tag' , 'cat'])->where('id' , $request->id)->first();
+    }
+
 }

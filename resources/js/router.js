@@ -18,6 +18,8 @@ import role from './admin/pages/role.vue'
 import assignRole from './admin/pages/assignRole.vue'
 import createBlog from './admin/pages/createBlog.vue'
 import blogs from './admin/pages/blogs.vue'
+import editblog from './admin/pages/editblog.vue'
+import notfound from './admin/pages/notfound.vue'
 
 
 const routes = [
@@ -67,6 +69,16 @@ const routes = [
         path: '/blogs',
         component: blogs,
         name: 'blogs'
+    },
+    {
+        path: '/editblog/:id',
+        component: editblog,
+        name: 'editblog'
+    },
+    {
+        path: '*',
+        component: notfound,
+        name: 'notfound'
     },
 
 

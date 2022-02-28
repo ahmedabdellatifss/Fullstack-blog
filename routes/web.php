@@ -42,6 +42,7 @@ Route::prefix('app/')->middleware([AdminCheck::class])->group(function(){
 
     Route::get('blogsdata' , 'AdminController@blogdata'); // Get the Blogs Items
     Route::post('delete_blog' , 'AdminController@deleteBlog');
+    Route::get('blog_single/{id}' , 'AdminController@singleBlogItem');
 
 });
 
@@ -55,7 +56,7 @@ Route::get('slug' , 'AdminController@slug');
 
 Route::get('/' , 'AdminController@index');
 Route::get('/logout' , 'AdminController@logout');
-Route::any('{slug}' , 'AdminController@index');
+Route::any('{slug}', 'AdminController@index')->where('slug', '([A-z\d\-\/_.]+)?');
 
 
 
