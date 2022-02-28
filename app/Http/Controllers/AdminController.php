@@ -348,7 +348,7 @@ class AdminController extends Controller
         return $title;
     }
 
-     public function createBlog(Request $request)
+    public function createBlog(Request $request)
     {
         $this->validate($request, [
             'title' => 'required',
@@ -406,6 +406,61 @@ class AdminController extends Controller
     public function singleBlogItem(Request $request)
     {
         return Blog::with(['tag' , 'cat'])->where('id' , $request->id)->first();
+    }
+
+
+    public function updateBlog(Request $request , $id)
+    {
+
+        $this->validate($request, [
+            'title' => 'required',
+            'post' => 'required',
+            'post_excerpt' => 'required',
+            'metaDescription' => 'required',
+            'jsonData' => 'required',
+            'category_id' => 'required',
+            'tag_id' => 'required',
+        ]);
+        $categories = $request->category_id;
+        $tags = $request->tag_id;
+
+        $blogCategories = [];
+        $blogTags = [];
+        DB::beginTransaction();
+        try {
+            $blog = Blog::where('id' , $id)->update([
+                'title' => $request->title,
+                'slug' => $request->title,
+                'post' => $request->post,
+                'post_excerpt' => $request->post_excerpt,
+                'user_id' => Auth::user()->id,
+                'metaDescription' => $request->metaDescription,
+                'jsonData' => $request->jsonData,
+            ]);
+
+            // Update blog categories
+            foreach ($categories as $c) {
+                array_push($blogCategories, ['category_id' => $c, 'blog_id' => $id]);
+            }
+            //delete All previous categories  #45
+            Blogcategory::where('blog_id' ,$id)->delete();
+            Blogcategory::insert($blogCategories);
+
+
+            // Update blog_tags
+            foreach ($tags as $t) {
+                array_push($blogTags, ['tag_id' => $t, 'blog_id' => $id]);
+            }
+            //delete All previous blog_tags  #45
+            Blogtag::where('blog_id', $id)->delete();
+            Blogtag::insert($blogTags);
+            DB::commit();
+            return 'done';
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return 'not done';
+        }
+
     }
 
 }
